@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const express_mongo_sanitize= require('express-mongo-sanitize');
 const xss=require('xss-clean');
 const hpp = require('hpp')
+const helmet = require('helmet');
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
@@ -17,7 +18,7 @@ const admin = require('./routers/admin_router')
 const payment = require('./routers/payment_router')
 
 const app = express();
-app.use(express.json());
+
 
 app.use(cors())
 
@@ -36,6 +37,7 @@ const ratelimiter = rateLimit({
 
  app.use(ratelimiter); 
 
+ app.use(helmet());
  app.use(hpp())
  app.use(express_mongo_sanitize())
  app.use(xss())
@@ -47,13 +49,13 @@ app.use('/app/payments', payment);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-
+// if route not exist in app
 app.all('*', (req, res, next) => {
   const error = new Error(`Can't find this route ${req.originalUrl}`);
   next(error); 
 });
 
-
+// error express handling
 app.use((err, req, res, next) => {
   res.status(400).json({
     success: false,
