@@ -40,8 +40,8 @@ router.post('/create-payment',auth, async (req, res) => {
         const paymentUrl = await createInvoice({
             orderNumber:`ORDER-${Date.now()}`,
             amount,
-            callBackUrl: "https://www.admin.nine2030.com/app/payments/payment-success",
-            cancelUrl: "https://www.admin.nine2030.com/app/payments/payment-cancel",
+            callBackUrl: "http://localhost:3000/app/payments/payment-success",
+            cancelUrl: "http://localhost:3000/app/payments/payment-cancel",
             clientName:`${user_data.firstname} ${user_data.lastname}`,
             clientEmail:user_data.email,
             clientMobile:user_data.mobile,
@@ -189,7 +189,7 @@ router.get('/payment-success', async (req, res) => {
           async function main() {
             const info = await transporter.sendMail({
               from: process.env.USER_EMAIL,
-              to: 'ninetwo2030@gmail.com',
+              to: 'test@gmail.com',
               subject: "NOTIFICATION",
               html: `<P> السلام عليكم استاذ عبد العزيز .هناك عميل اتم شراء منتج. برجاء تفقد موقعك !!</P>`,
             });
@@ -272,7 +272,7 @@ router.get('/payment-success', async (req, res) => {
                         <h2>تمت عملية الدفع بنجاح</h2>
                         <p>شكرا لدفعك.</p>
                     </div>
-                    <a href="https://www.nine2030.com" class="home-button">الرجوع للصفحة الرئيسية</a>
+                    <a href="http://localhost:3000" class="home-button">الرجوع للصفحة الرئيسية</a>
                 </div>
             </body>
             </html>
@@ -356,7 +356,7 @@ router.get('/payment-cancel', (req, res) => {
                     <h2>فشلت عملية الدفع</h2>
                     <p>حاول مرة أخرى لاحقًا.</p>
                 </div>
-                <a href="https://www.nine2030.com" class="home-button">الرجوع للصفحة الرئيسية</a>
+                <a href="http://localhost:3000" class="home-button">الرجوع للصفحة الرئيسية</a>
             </div>
         </body>
         </html>
