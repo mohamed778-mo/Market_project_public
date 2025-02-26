@@ -85,7 +85,7 @@ const add_product = async (req, res) => {
     if (!admin.apps.length) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        storageBucket: "gs://fireproducts-b6b10.appspot.com"
+      // storageBucket: "secret.com" 
       });
     }
 
@@ -219,7 +219,7 @@ const editData = async (req, res) => {
     if (!admin.apps.length) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        storageBucket: "gs://fireproducts-b6b10.appspot.com"
+       // storageBucket: "secret.com" 
 
       });
     }
