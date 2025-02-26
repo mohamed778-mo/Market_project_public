@@ -33,6 +33,7 @@ app.use(express.json({ limit: LIMIT }));
 
 app.use(cookieParser());
 
+// تسجيل الأحداث والأخطاء داخل التطبيق	
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -42,7 +43,7 @@ const logger = winston.createLogger({
   ]
 });
 
-
+// تسجيل الطلبات HTTP القادمة	
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 
