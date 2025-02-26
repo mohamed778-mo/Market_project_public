@@ -9,6 +9,10 @@ const express_mongo_sanitize= require('express-mongo-sanitize');
 const xss=require('xss-clean');
 const hpp = require('hpp')
 const helmet = require('helmet');
+const winston = require('winston');
+const morgan = require('morgan');
+const fs = require('fs');
+const path = require('path');
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
@@ -28,6 +32,19 @@ app.use(bodyParser.urlencoded({ limit: LIMIT, extended: true }));
 app.use(express.json({ limit: LIMIT }));
 
 app.use(cookieParser());
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' })
+  ]
+});
+
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+app.use(morgan('combined', { stream: accessLogStream }));
 
 const ratelimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
